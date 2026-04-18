@@ -109,7 +109,7 @@
       background: #000;
       border-radius: 12px;
       padding: 12px;
-      min-width: 140px;
+      min-width: 150px;
       border-left: 4px solid;
       position: relative;
       border: 1px solid #0ff3;
@@ -156,6 +156,26 @@
       border-radius: 12px;
       font-size: 16px;
       width: 100%;
+    }
+
+    .duration-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .duration-box {
+      flex: 1;
+    }
+
+    .duration-box input {
+      text-align: center;
+    }
+
+    .duration-label {
+      text-align: center;
+      margin-top: 5px;
+      font-size: 12px;
+      opacity: 0.6;
     }
 
     select {
@@ -467,8 +487,17 @@
       </div>
 
       <div class="input-group">
-        <label>Duration (minutes)</label>
-        <input type="number" id="durationInput" value="25" min="1" max="480">
+        <label>Duration</label>
+        <div class="duration-container">
+          <div class="duration-box">
+            <input type="number" id="hoursInput" value="0" min="0" max="24" placeholder="0">
+            <div class="duration-label">Hours</div>
+          </div>
+          <div class="duration-box">
+            <input type="number" id="minutesInput" value="25" min="0" max="59" placeholder="25">
+            <div class="duration-label">Minutes</div>
+          </div>
+        </div>
       </div>
 
       <label>Category</label>
@@ -558,7 +587,8 @@
       const timeline = document.getElementById('timeline');
       const activeBadge = document.getElementById('activeBadge');
       const timeInput = document.getElementById('timeInput');
-      const durationInput = document.getElementById('durationInput');
+      const hoursInput = document.getElementById('hoursInput');
+      const minutesInput = document.getElementById('minutesInput');
       const labelInput = document.getElementById('labelInput');
       const addBtn = document.getElementById('addBtn');
       const nextTime = document.getElementById('nextTime');
@@ -636,18 +666,25 @@
       const addHandler = (e) => {
         e.preventDefault();
         const time = timeInput.value;
-        const duration = parseInt(durationInput.value);
+        const hours = parseInt(hoursInput.value) || 0;
+        const minutes = parseInt(minutesInput.value) || 0;
+        const totalMinutes = (hours * 60) + minutes;
         const label = labelInput.value.trim();
         
-        if (!time || !duration || duration < 1 || !label) {
-          alert('Please fill all fields');
+        if (!time || totalMinutes < 1) {
+          alert('Please set a valid duration (at least 1 minute)');
+          return;
+        }
+        
+        if (!label) {
+          alert('Please enter a label');
           return;
         }
         
         alarms.push({
           id: Date.now(),
           start: time,
-          durationMin: duration,
+          durationMin: totalMinutes,
           category: selectedCategory,
           label: label
         });
@@ -657,7 +694,8 @@
         saveData();
         
         labelInput.value = '';
-        durationInput.value = '25';
+        hoursInput.value = '0';
+        minutesInput.value = '25';
         timeInput.value = '09:00';
         
         addBtn.textContent = '✓ ALARM ADDED!';
@@ -679,9 +717,23 @@
       }
 
       function formatCount(sec) {
-        const m = Math.floor(Math.max(0, sec) / 60);
-        const s = Math.max(0, sec) % 60;
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = sec % 60;
+        
+        if (h > 0) {
+          return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
         return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+      }
+
+      function formatDuration(minutes) {
+        const h = Math.floor(minutes / 60);
+        const m = minutes % 60;
+        if (h > 0) {
+          return `${h}h ${m}m`;
+        }
+        return `${m}m`;
       }
 
       function updateBanner() {
@@ -730,7 +782,7 @@
               <button class="delete-btn" data-id="${a.id}">✕</button>
             </div>
             <div style="font-weight:500;">${a.label}</div>
-            <div style="font-size:12px; opacity:0.7;">${a.durationMin}m</div>
+            <div style="font-size:12px; opacity:0.7;">${formatDuration(a.durationMin)}</div>
           </div>
         `).join('');
 
@@ -852,11 +904,11 @@
       }
 
       function saveData() {
-        localStorage.setItem('alarms_3dclock_black', JSON.stringify(alarms));
+        localStorage.setItem('alarms_3dclock_hours', JSON.stringify(alarms));
       }
 
       function loadData() {
-        const saved = localStorage.getItem('alarms_3dclock_black');
+        const saved = localStorage.getItem('alarms_3dclock_hours');
         if (saved) {
           try { alarms = JSON.parse(saved); } catch(e) {}
         }
