@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>NEON FLOW • Productivity Clock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>NEON FLOW • Mobile Fixed</title>
   <style>
     * {
       margin: 0;
@@ -15,40 +15,194 @@
     body {
       background: #0b0e14;
       min-height: 100vh;
-      color: #eef5ff;
+      color: white;
       padding: 10px;
     }
 
     #app {
-      max-width: 600px;
+      max-width: 500px;
       margin: 0 auto;
     }
 
-    .glass-panel {
-      background: rgba(18, 25, 35, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 255, 255, 0.15);
+    .panel {
+      background: rgba(18, 25, 35, 0.9);
+      border: 1px solid #0ff3;
       border-radius: 20px;
-      padding: 20px 15px;
+      padding: 20px;
       margin-bottom: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
+    h1 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      text-shadow: 0 0 15px cyan;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    /* Banner */
+    .banner {
+      background: linear-gradient(135deg, #0ff2, #3b82f62);
+      border: 1px solid #0ff;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .banner-label {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .banner-time {
+      font-size: 36px;
+      font-weight: bold;
+      color: #0ff;
+      margin: 10px 0;
+    }
+
+    .banner-countdown {
+      font-size: 42px;
+      font-weight: bold;
+      text-shadow: 0 0 20px cyan;
+    }
+
+    /* Active badge */
+    .active-badge {
+      background: #0f1a24;
+      padding: 15px;
+      border-radius: 40px;
+      border-left: 5px solid #0ff;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    /* Timeline */
+    .timeline-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 5px 0;
+    }
+
+    .timeline-track {
+      display: flex;
+      gap: 12px;
+      min-width: min-content;
+    }
+
+    .alarm-card {
+      background: #0f1a24;
+      border-radius: 15px;
+      padding: 15px;
+      min-width: 150px;
+      border-left: 5px solid;
+    }
+
+    .alarm-card.work { border-color: #3b82f6; }
+    .alarm-card.rest { border-color: #10b981; }
+    .alarm-card.sleep { border-color: #8b5cf6; }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #ff5e7c;
+      font-size: 24px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    /* Form elements */
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      opacity: 0.7;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      background: #0f1a24;
+      border: 1px solid #2e4b62;
+      color: white;
+      padding: 15px;
+      border-radius: 15px;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .category-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .cat-option {
+      flex: 1;
+      background: #0f1a24;
+      border: 2px solid #2e4b62;
+      color: white;
+      padding: 15px;
+      border-radius: 15px;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .cat-option.selected {
+      border-color: #0ff;
+      background: #0ff2;
+    }
+
+    .cat-option.work.selected { border-color: #3b82f6; background: #3b82f62; }
+    .cat-option.rest.selected { border-color: #10b981; background: #10b9812; }
+    .cat-option.sleep.selected { border-color: #8b5cf6; background: #8b5cf62; }
+
+    .add-btn {
+      background: #0066ff;
+      border: none;
+      color: white;
+      padding: 18px;
+      border-radius: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 0 20px #0066ff;
+    }
+
+    .add-btn:active {
+      background: #0052cc;
+    }
+
+    /* Fullscreen */
     body.fullscreen-active {
-      background: #000 !important;
+      background: black;
       padding: 0;
     }
 
     body.fullscreen-active #app {
-      display: none !important;
+      display: none;
     }
 
     #fullscreen-overlay {
       position: fixed;
       inset: 0;
-      background: #000;
-      z-index: 9999;
+      background: black;
       display: none;
       align-items: center;
       justify-content: center;
@@ -60,251 +214,22 @@
       display: flex;
     }
 
-    /* Header */
-    h1 {
-      font-weight: 300;
-      font-size: 28px;
-      margin-bottom: 15px;
-      text-shadow: 0 0 20px cyan;
-    }
-
-    .format-toggle {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .format-btn {
-      background: #0f1a24;
-      border: 1px solid #2e4b62;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      flex: 1;
-      touch-action: manipulation;
-    }
-
-    .format-btn.active {
-      background: #0066ff40;
-      border-color: #0ff;
-      box-shadow: 0 0 15px cyan;
-    }
-
-    /* Next alarm banner */
-    .next-banner {
-      background: linear-gradient(135deg, #0ff1, #3b82f61a);
-      border: 1px solid #0ff4;
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    .next-label {
-      font-size: 14px;
-      opacity: 0.7;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .next-time {
-      font-size: 32px;
-      font-weight: bold;
-      color: #0ff;
-      text-shadow: 0 0 20px cyan;
-      margin: 10px 0;
-    }
-
-    .next-details {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    .countdown-big {
-      font-size: 48px;
-      font-weight: bold;
-      text-shadow: 0 0 30px cyan;
-      font-variant-numeric: tabular-nums;
-    }
-
-    /* Active session */
-    .active-badge {
-      background: #0f1a24;
-      padding: 12px 20px;
-      border-radius: 40px;
-      border-left: 4px solid #0ff;
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
-
-    /* Timeline */
-    .timeline-title {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-
-    .timeline-scroll {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 10px;
-    }
-
-    .timeline-track {
-      display: flex;
-      gap: 12px;
-      min-width: min-content;
-    }
-
-    .alarm-card {
-      background: rgba(12, 20, 28, 0.9);
-      border-radius: 16px;
-      padding: 15px;
-      min-width: 150px;
-      border-left: 6px solid;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
-
-    .alarm-card.work { border-color: #3b82f6; }
-    .alarm-card.rest { border-color: #10b981; }
-    .alarm-card.sleep { border-color: #8b5cf6; }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-
-    .delete-btn {
-      background: none;
-      border: none;
-      color: #ff5e7c;
-      font-size: 24px;
-      cursor: pointer;
-      padding: 5px 10px;
-      touch-action: manipulation;
-    }
-
-    /* Add alarm section */
-    .add-title {
-      font-size: 20px;
-      margin-bottom: 15px;
-    }
-
-    .input-row {
-      margin-bottom: 15px;
-    }
-
-    .input-label {
-      display: block;
-      font-size: 14px;
-      opacity: 0.7;
-      margin-bottom: 5px;
-      text-transform: uppercase;
-    }
-
-    .time-input {
-      background: #0f1a24;
-      border: 1px solid #2e4b62;
-      color: white;
-      padding: 15px;
-      border-radius: 30px;
-      font-size: 18px;
-      width: 100%;
-      touch-action: manipulation;
-    }
-
-    .duration-input {
-      background: #0f1a24;
-      border: 1px solid #2e4b62;
-      color: white;
-      padding: 15px;
-      border-radius: 30px;
-      font-size: 18px;
-      width: 100%;
-      touch-action: manipulation;
-    }
-
-    .category-buttons {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .cat-btn {
-      flex: 1;
-      background: #0f1a24;
-      border: 1px solid #2e4b62;
-      color: white;
-      padding: 15px;
-      border-radius: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
-
-    .cat-btn.active {
-      background: #0066ff40;
-      border-color: #0ff;
-    }
-
-    .cat-btn.work.active { background: #3b82f640; }
-    .cat-btn.rest.active { background: #10b98140; }
-    .cat-btn.sleep.active { background: #8b5cf640; }
-
-    .label-input {
-      background: #0f1a24;
-      border: 1px solid #2e4b62;
-      color: white;
-      padding: 15px;
-      border-radius: 30px;
-      font-size: 16px;
-      width: 100%;
-      margin-bottom: 15px;
-      touch-action: manipulation;
-    }
-
-    .add-btn {
-      background: #0066ff20;
-      border: 2px solid #0ff;
-      color: white;
-      padding: 18px;
-      border-radius: 30px;
-      font-size: 18px;
-      font-weight: bold;
-      width: 100%;
-      cursor: pointer;
-      box-shadow: 0 0 20px cyan;
-      touch-action: manipulation;
-    }
-
-    .add-btn:active {
-      background: #0066ff60;
-      transform: scale(0.98);
-    }
-
-    /* Fullscreen styles */
     .fs-category {
       font-size: 24px;
       text-transform: uppercase;
-      letter-spacing: 4px;
-      color: #a0ecff;
+      color: #0ff;
       margin-bottom: 20px;
     }
 
     .fs-clock {
-      font-size: 60px;
+      font-size: 70px;
       font-weight: 300;
-      color: #b3f0ff;
+      color: white;
       text-shadow: 0 0 30px cyan;
       margin-bottom: 30px;
     }
 
-    .canvas-container {
+    .canvas-box {
       position: relative;
       width: 280px;
       height: 280px;
@@ -314,7 +239,6 @@
     #timer-canvas {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 0 25px cyan);
     }
 
     .fs-countdown {
@@ -333,11 +257,10 @@
       border: 1px solid #555;
       color: white;
       padding: 15px 30px;
-      border-radius: 30px;
+      border-radius: 15px;
       font-size: 16px;
       margin-top: 30px;
       cursor: pointer;
-      touch-action: manipulation;
     }
 
     #flash-overlay {
@@ -349,13 +272,13 @@
       z-index: 10000;
     }
 
-    .flash-active {
-      animation: flash 0.5s ease-out;
+    .flash {
+      animation: flashAnim 0.5s;
     }
 
-    @keyframes flash {
+    @keyframes flashAnim {
       0%,100% { opacity: 0; }
-      50% { opacity: 0.8; background: #aaffff; }
+      50% { opacity: 0.8; }
     }
 
     .hint {
@@ -364,88 +287,85 @@
       font-size: 14px;
       margin-top: 10px;
     }
+
+    button, .cat-option, .alarm-card, .delete-btn {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
   <div id="app">
     <h1>⚡ FOCUSFLOW</h1>
-    
-    <div class="format-toggle">
-      <button class="format-btn active" data-format="24">24 Hour</button>
-      <button class="format-btn" data-format="12">12 Hour</button>
+
+    <div class="banner" id="banner">
+      <div class="banner-label">NEXT ALARM</div>
+      <div class="banner-time" id="nextTime">--:--</div>
+      <div class="banner-countdown" id="countdown">--:--:--</div>
+      <div id="nextLabel" style="margin-top:10px;">No alarms set</div>
     </div>
 
-    <div class="next-banner" id="nextBanner">
-      <div class="next-label">Next Alarm</div>
-      <div class="next-time" id="nextTimeDisplay">--:--</div>
-      <div class="next-details" id="nextDetailsDisplay">No alarms</div>
-      <div class="countdown-big" id="countdownDisplay">--:--:--</div>
-    </div>
+    <div class="active-badge" id="activeBadge">⚪ No active session</div>
 
-    <div class="active-badge" id="activeDisplay">⚪ No active session</div>
-
-    <div class="glass-panel">
-      <div class="timeline-title">📋 Today's Schedule</div>
+    <div class="panel">
+      <h2>📋 Today's Schedule</h2>
       <div class="timeline-scroll">
-        <div class="timeline-track" id="timelineTrack"></div>
+        <div class="timeline-track" id="timeline"></div>
       </div>
-      <div class="hint">← Swipe → • Double tap to start</div>
+      <div class="hint">← Swipe • Tap card twice to start</div>
     </div>
 
-    <div class="glass-panel">
-      <div class="add-title">➕ Add New Alarm</div>
+    <div class="panel">
+      <h2>➕ Add Alarm</h2>
       
-      <div class="input-row">
-        <label class="input-label">Start Time</label>
-        <input type="time" id="timeInput" class="time-input" value="09:00">
+      <div class="input-group">
+        <label>Start Time</label>
+        <input type="time" id="timeInput" value="09:00">
       </div>
 
-      <div class="input-row">
-        <label class="input-label">Duration (minutes)</label>
-        <input type="number" id="durationInput" class="duration-input" value="25" min="1" max="480">
+      <div class="input-group">
+        <label>Duration (minutes)</label>
+        <input type="number" id="durationInput" value="25" min="1" max="480">
       </div>
 
-      <label class="input-label">Category</label>
-      <div class="category-buttons">
-        <button class="cat-btn work active" data-cat="work">💼 Work</button>
-        <button class="cat-btn rest" data-cat="rest">☕ Rest</button>
-        <button class="cat-btn sleep" data-cat="sleep">🌙 Sleep</button>
+      <label>Category</label>
+      <div class="category-group">
+        <div class="cat-option work selected" data-cat="work">💼 Work</div>
+        <div class="cat-option rest" data-cat="rest">☕ Rest</div>
+        <div class="cat-option sleep" data-cat="sleep">🌙 Sleep</div>
       </div>
 
-      <div class="input-row">
-        <label class="input-label">Label</label>
-        <input type="text" id="labelInput" class="label-input" value="Focus Session" placeholder="e.g., Study">
+      <div class="input-group">
+        <label>Label</label>
+        <input type="text" id="labelInput" value="Focus" placeholder="e.g., Study">
       </div>
 
-      <button class="add-btn" id="addButton">+ Add Alarm</button>
+      <button class="add-btn" id="addBtn">➕ ADD ALARM</button>
     </div>
   </div>
 
   <div id="fullscreen-overlay">
-    <div class="fs-category" id="fsCategory">WORK</div>
+    <div class="fs-category" id="fsCat">WORK</div>
     <div class="fs-clock" id="fsClock">22:45</div>
-    <div class="canvas-container">
+    <div class="canvas-box">
       <canvas id="timer-canvas" width="400" height="400"></canvas>
-      <div class="fs-countdown" id="fsCountdown">25:00</div>
+      <div class="fs-countdown" id="fsCount">25:00</div>
     </div>
-    <div id="fsNextInfo" style="opacity:0.8; margin-top:20px;">Next: —</div>
-    <button class="exit-btn" id="exitButton">Exit</button>
+    <div id="fsNext" style="opacity:0.7;">Next: —</div>
+    <button class="exit-btn" id="exitBtn">EXIT</button>
   </div>
 
   <div id="flash-overlay"></div>
-  <audio id="alarmSound" preload="auto">
-    <source src="data:audio/wav;base64,UklGRlwAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACAgICAf39/f39/f3+AgICAf39/f39/f3+AgICAf39/f39/f3+AgICAf39/f39/f3+AgICAf39/f39/f38=" type="audio/wav">
-  </audio>
 
   <script>
     (function(){
-      // State
+      // Simple state
       let alarms = [];
-      let activeAlarmId = null;
-      let timerInterval = null;
-      let currentSeconds = 0;
-      let clockFormat = '24';
-      let selectedCategory = 'work';
+      let activeId = null;
+      let timer = null;
+      let currentSec = 0;
+      let selectedCat = 'work';
       
       // Canvas
       const canvas = document.getElementById('timer-canvas');
@@ -453,76 +373,66 @@
       let rotation = 0;
       let animFrame = null;
 
-      // DOM
-      const timelineTrack = document.getElementById('timelineTrack');
-      const activeDisplay = document.getElementById('activeDisplay');
+      // Get elements
+      const timeline = document.getElementById('timeline');
+      const activeBadge = document.getElementById('activeBadge');
       const timeInput = document.getElementById('timeInput');
       const durationInput = document.getElementById('durationInput');
       const labelInput = document.getElementById('labelInput');
-      const addButton = document.getElementById('addButton');
-      const nextTimeDisplay = document.getElementById('nextTimeDisplay');
-      const nextDetailsDisplay = document.getElementById('nextDetailsDisplay');
-      const countdownDisplay = document.getElementById('countdownDisplay');
-      const fsCategory = document.getElementById('fsCategory');
+      const addBtn = document.getElementById('addBtn');
+      const nextTime = document.getElementById('nextTime');
+      const countdown = document.getElementById('countdown');
+      const nextLabel = document.getElementById('nextLabel');
+      const fsCat = document.getElementById('fsCat');
       const fsClock = document.getElementById('fsClock');
-      const fsCountdown = document.getElementById('fsCountdown');
-      const fsNextInfo = document.getElementById('fsNextInfo');
-      const exitButton = document.getElementById('exitButton');
-      const flashOverlay = document.getElementById('flash-overlay');
-      const alarmSound = document.getElementById('alarmSound');
+      const fsCount = document.getElementById('fsCount');
+      const fsNext = document.getElementById('fsNext');
+      const exitBtn = document.getElementById('exitBtn');
+      const flash = document.getElementById('flash-overlay');
 
-      // Helpers
-      function formatTime(date, format) {
-        if (format === '24') {
-          return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-        }
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+      // Category selection
+      document.querySelectorAll('.cat-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+          document.querySelectorAll('.cat-option').forEach(o => o.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedCat = this.dataset.cat;
+        });
+        
+        // Touch event
+        opt.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+        }, { passive: false });
+      });
+
+      // Format time
+      function formatTime(date) {
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
       }
 
-      function parseTime(timeStr) {
-        const [h, m] = timeStr.split(':').map(Number);
+      function parseTime(str) {
+        const [h, m] = str.split(':').map(Number);
         const d = new Date();
         d.setHours(h, m, 0, 0);
         return d;
       }
 
-      function formatCountdown(sec) {
+      function formatCount(sec) {
         const m = Math.floor(Math.max(0, sec) / 60);
         const s = Math.max(0, sec) % 60;
         return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
       }
 
-      // Category selection
-      document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedCategory = btn.dataset.cat;
-        });
-      });
-
-      // Format toggle
-      document.querySelectorAll('.format-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          clockFormat = btn.dataset.format;
-          renderTimeline();
-          updateNextAlarmDisplay();
-        });
-      });
-
-      // Update next alarm display
-      function updateNextAlarmDisplay() {
+      // Update banner
+      function updateBanner() {
         const now = new Date();
         const upcoming = alarms.filter(a => parseTime(a.start) > now).sort((a, b) => 
           parseTime(a.start) - parseTime(b.start)
         );
 
         if (upcoming.length === 0) {
-          nextTimeDisplay.textContent = '--:--';
-          nextDetailsDisplay.textContent = 'No alarms';
-          countdownDisplay.textContent = '--:--:--';
+          nextTime.textContent = '--:--';
+          countdown.textContent = '--:--:--';
+          nextLabel.textContent = 'No alarms set';
           return;
         }
 
@@ -531,72 +441,79 @@
         const diff = Math.floor((alarmTime - now) / 1000);
         
         if (diff <= 0) {
-          if (activeAlarmId !== next.id) startAlarm(next);
+          if (activeId !== next.id) startAlarm(next);
           return;
         }
 
-        const hours = Math.floor(diff / 3600);
-        const minutes = Math.floor((diff % 3600) / 60);
-        const seconds = diff % 60;
+        const h = Math.floor(diff / 3600);
+        const m = Math.floor((diff % 3600) / 60);
+        const s = diff % 60;
 
-        nextTimeDisplay.textContent = formatTime(alarmTime, clockFormat);
-        nextDetailsDisplay.textContent = `${next.label} • ${next.category}`;
-        countdownDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        nextTime.textContent = formatTime(alarmTime);
+        countdown.textContent = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        nextLabel.textContent = `${next.label} • ${next.category}`;
       }
 
       // Render timeline
       function renderTimeline() {
         if (alarms.length === 0) {
-          timelineTrack.innerHTML = '<div class="alarm-card" style="opacity:0.5; text-align:center;">✨ Add an alarm ✨</div>';
+          timeline.innerHTML = '<div class="alarm-card" style="opacity:0.5;">No alarms</div>';
           return;
         }
 
         const sorted = [...alarms].sort((a, b) => parseTime(a.start) - parseTime(b.start));
         
-        timelineTrack.innerHTML = sorted.map(alarm => {
-          const timeDate = parseTime(alarm.start);
-          return `
-            <div class="alarm-card ${alarm.category}" data-id="${alarm.id}">
-              <div class="card-header">
-                <span>${formatTime(timeDate, clockFormat)}</span>
-                <button class="delete-btn" data-id="${alarm.id}">✕</button>
-              </div>
-              <div style="font-weight:500;">${alarm.label}</div>
-              <div style="font-size:14px; opacity:0.8;">${alarm.durationMin}m • ${alarm.category}</div>
+        timeline.innerHTML = sorted.map(a => `
+          <div class="alarm-card ${a.category}" data-id="${a.id}">
+            <div class="card-header">
+              <span>${formatTime(parseTime(a.start))}</span>
+              <button class="delete-btn" data-id="${a.id}">✕</button>
             </div>
-          `;
-        }).join('');
+            <div>${a.label}</div>
+            <div style="font-size:14px; opacity:0.7;">${a.durationMin}m</div>
+          </div>
+        `).join('');
 
-        // Delete handlers
+        // Delete buttons
         document.querySelectorAll('.delete-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
+          const handler = (e) => {
             e.stopPropagation();
+            e.preventDefault();
             const id = Number(btn.dataset.id);
-            if (confirm('Delete this alarm?')) {
-              if (activeAlarmId === id) stopAlarm();
+            if (confirm('Delete?')) {
+              if (activeId === id) stopAlarm();
               alarms = alarms.filter(a => a.id !== id);
               renderTimeline();
-              updateNextAlarmDisplay();
-              saveAlarms();
+              updateBanner();
+              saveData();
             }
-          });
+          };
+          
+          btn.addEventListener('click', handler);
+          btn.addEventListener('touchstart', handler, { passive: false });
         });
 
-        // Double tap handlers
+        // Card double tap
         document.querySelectorAll('.alarm-card').forEach(card => {
-          let taps = 0;
-          card.addEventListener('click', (e) => {
+          let tapCount = 0;
+          
+          const tapHandler = (e) => {
             if (e.target.classList.contains('delete-btn')) return;
-            taps++;
-            if (taps === 1) {
-              setTimeout(() => { taps = 0; }, 300);
-            } else if (taps === 2) {
+            e.preventDefault();
+            
+            tapCount++;
+            if (tapCount === 1) {
+              setTimeout(() => { tapCount = 0; }, 300);
+            } else if (tapCount === 2) {
               const id = Number(card.dataset.id);
               const alarm = alarms.find(a => a.id === id);
               if (alarm) startAlarm(alarm);
-              taps = 0;
+              tapCount = 0;
             }
-          });
+          };
+          
+          card.addEventListener('click', tapHandler);
+          card.addEventListener('touchstart', tapHandler, { passive: false });
         });
       }
 
@@ -606,118 +523,98 @@
         const duration = parseInt(durationInput.value);
         const label = labelInput.value.trim();
 
-        if (!time || !duration || duration < 1 || !label) {
-          alert('Please fill all fields');
+        if (!time || !duration || !label) {
+          alert('Fill all fields');
           return;
         }
 
-        const newAlarm = {
+        alarms.push({
           id: Date.now(),
           start: time,
           durationMin: duration,
-          category: selectedCategory,
+          category: selectedCat,
           label: label
-        };
+        });
 
-        alarms.push(newAlarm);
         renderTimeline();
-        updateNextAlarmDisplay();
-        saveAlarms();
+        updateBanner();
+        saveData();
 
-        // Reset form
         labelInput.value = '';
         durationInput.value = '25';
         
-        addButton.textContent = '✓ Added!';
-        setTimeout(() => { addButton.textContent = '+ Add Alarm'; }, 1000);
+        addBtn.textContent = '✓ ADDED!';
+        setTimeout(() => { addBtn.textContent = '➕ ADD ALARM'; }, 1000);
       }
 
       // Start alarm
       function startAlarm(alarm) {
-        if (activeAlarmId) stopAlarm();
+        if (activeId) stopAlarm();
         
-        activeAlarmId = alarm.id;
-        currentSeconds = alarm.durationMin * 60;
+        activeId = alarm.id;
+        currentSec = alarm.durationMin * 60;
         
-        fsCategory.textContent = `${alarm.category.toUpperCase()} • ${alarm.label}`;
-        fsCountdown.textContent = formatCountdown(currentSeconds);
+        fsCat.textContent = `${alarm.category.toUpperCase()} • ${alarm.label}`;
+        fsCount.textContent = formatCount(currentSec);
         
-        // Enter fullscreen
         document.body.classList.add('fullscreen-active');
-        updateFullscreenClock();
-        const clockInterval = setInterval(updateFullscreenClock, 500);
+        updateClock();
+        const clockInt = setInterval(updateClock, 500);
         
-        // Timer
-        timerInterval = setInterval(() => {
-          if (currentSeconds <= 0) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            clearInterval(clockInterval);
-            alarmEnd(alarm);
+        timer = setInterval(() => {
+          if (currentSec <= 0) {
+            clearInterval(timer);
+            clearInterval(clockInt);
+            endAlarm(alarm);
             return;
           }
-          currentSeconds--;
-          fsCountdown.textContent = formatCountdown(currentSeconds);
-          activeDisplay.textContent = `⚡ ${alarm.category} • ${alarm.label} • ${formatCountdown(currentSeconds)}`;
+          currentSec--;
+          fsCount.textContent = formatCount(currentSec);
+          activeBadge.textContent = `⚡ ${alarm.category} • ${alarm.label} • ${formatCount(currentSec)}`;
         }, 1000);
 
-        // Animation
         function animate() {
-          drawRing(currentSeconds, alarm.durationMin * 60);
+          drawRing(currentSec, alarm.durationMin * 60);
           rotation += 0.012;
           animFrame = requestAnimationFrame(animate);
         }
         animate();
 
-        activeDisplay.textContent = `⚡ ${alarm.category} • ${alarm.label} • ${formatCountdown(currentSeconds)}`;
-        
-        // Save clock interval for cleanup
-        window.clockInterval = clockInterval;
+        activeBadge.textContent = `⚡ ${alarm.category} • ${alarm.label} • ${formatCount(currentSec)}`;
+        window.clockInt = clockInt;
       }
 
-      function updateFullscreenClock() {
+      function updateClock() {
         const now = new Date();
-        if (clockFormat === '24') {
-          fsClock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-        } else {
-          fsClock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-        }
+        fsClock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
         
-        // Update next info
-        const now2 = new Date();
-        const upcoming = alarms.filter(a => parseTime(a.start) > now2);
-        if (upcoming.length > 0) {
-          const next = upcoming[0];
-          fsNextInfo.textContent = `Next: ${formatTime(parseTime(next.start), clockFormat)} • ${next.label}`;
+        const upcoming = alarms.filter(a => parseTime(a.start) > new Date());
+        if (upcoming.length) {
+          fsNext.textContent = `Next: ${formatTime(parseTime(upcoming[0].start))} • ${upcoming[0].label}`;
         }
       }
 
       function stopAlarm() {
-        if (timerInterval) clearInterval(timerInterval);
+        if (timer) clearInterval(timer);
         if (animFrame) cancelAnimationFrame(animFrame);
-        if (window.clockInterval) clearInterval(window.clockInterval);
-        timerInterval = null;
+        if (window.clockInt) clearInterval(window.clockInt);
+        timer = null;
         animFrame = null;
-        activeAlarmId = null;
+        activeId = null;
         document.body.classList.remove('fullscreen-active');
-        activeDisplay.textContent = '⚪ No active session';
-        updateNextAlarmDisplay();
+        activeBadge.textContent = '⚪ No active session';
+        updateBanner();
       }
 
-      function alarmEnd(alarm) {
-        alarmSound.play().catch(()=>{});
-        flashOverlay.classList.add('flash-active');
-        setTimeout(() => flashOverlay.classList.remove('flash-active'), 500);
-        
-        if (Notification.permission === 'granted') {
-          new Notification(`⏰ ${alarm.label} finished`, { body: `${alarm.category} session ended` });
-        }
+      function endAlarm(alarm) {
+        flash.classList.add('flash');
+        setTimeout(() => flash.classList.remove('flash'), 500);
         
         stopAlarm();
         alarms = alarms.filter(a => a.id !== alarm.id);
         renderTimeline();
-        updateNextAlarmDisplay();
-        saveAlarms();
+        updateBanner();
+        saveData();
       }
 
       function drawRing(current, total) {
@@ -743,60 +640,62 @@
         }
       }
 
-      function saveAlarms() {
-        localStorage.setItem('simple_alarms', JSON.stringify(alarms));
+      function saveData() {
+        localStorage.setItem('alarms_mobile', JSON.stringify(alarms));
       }
 
-      function loadAlarms() {
-        const saved = localStorage.getItem('simple_alarms');
+      function loadData() {
+        const saved = localStorage.getItem('alarms_mobile');
         if (saved) {
           try { alarms = JSON.parse(saved); } catch(e) {}
         }
         renderTimeline();
-        updateNextAlarmDisplay();
+        updateBanner();
       }
 
-      // Check for alarms to start
-      function checkAlarms() {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-        
-        alarms.forEach(alarm => {
-          if (alarm.start === timeStr && activeAlarmId !== alarm.id) {
-            startAlarm(alarm);
-          }
-        });
-      }
-
-      // Initialize
-      addButton.addEventListener('click', (e) => {
+      // Event listeners with touch support
+      addBtn.addEventListener('click', (e) => {
         e.preventDefault();
         addAlarm();
       });
+      
+      addBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        addAlarm();
+      }, { passive: false });
 
-      exitButton.addEventListener('click', () => {
-        if (activeAlarmId) {
-          if (confirm('Stop current session?')) stopAlarm();
+      exitBtn.addEventListener('click', () => {
+        if (activeId) {
+          if (confirm('Stop?')) stopAlarm();
         } else {
           document.body.classList.remove('fullscreen-active');
         }
       });
-
-      // Countdown timer update
-      setInterval(() => {
-        updateNextAlarmDisplay();
-        if (activeAlarmId) {
-          const active = alarms.find(a => a.id === activeAlarmId);
-          if (active) {
-            activeDisplay.textContent = `⚡ ${active.category} • ${active.label} • ${formatCountdown(currentSeconds)}`;
-          }
+      
+      exitBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (activeId) {
+          if (confirm('Stop?')) stopAlarm();
+        } else {
+          document.body.classList.remove('fullscreen-active');
         }
+      }, { passive: false });
+
+      // Check alarms
+      setInterval(() => {
+        const now = new Date();
+        const timeStr = formatTime(now);
+        
+        alarms.forEach(a => {
+          if (a.start === timeStr && activeId !== a.id) {
+            startAlarm(a);
+          }
+        });
+        
+        updateBanner();
       }, 1000);
 
-      setInterval(checkAlarms, 30000);
-      
-      Notification.requestPermission();
-      loadAlarms();
+      loadData();
     })();
   </script>
 </body>
