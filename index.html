@@ -77,6 +77,72 @@
       padding: 1.25rem;
     }
 
+    /* Next alarm countdown banner */
+    .next-alarm-banner {
+      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(59, 130, 246, 0.1));
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      border-radius: 2rem;
+      padding: 1rem 1.5rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); }
+      50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.4); }
+    }
+
+    .next-alarm-info {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .next-alarm-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.7;
+    }
+
+    .next-alarm-details {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0ff;
+      text-shadow: 0 0 10px cyan;
+    }
+
+    .countdown-to-alarm {
+      font-size: 1.8rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: #fff;
+      text-shadow: 0 0 20px #0ff, 0 0 40px #3b82f6;
+      letter-spacing: 2px;
+      min-width: 140px;
+      text-align: right;
+    }
+
+    @media (max-width: 640px) {
+      .next-alarm-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .countdown-to-alarm {
+        text-align: left;
+        font-size: 1.5rem;
+      }
+      .next-alarm-details {
+        font-size: 0.9rem;
+      }
+    }
+
     /* Mobile-optimized header */
     .header-row {
       display: flex;
@@ -110,7 +176,7 @@
       font-weight: 500;
       font-size: 0.85rem;
       flex: 1;
-      min-width: 180px;
+      min-width: 160px;
     }
 
     .time-format-toggle {
@@ -123,17 +189,18 @@
     }
 
     .format-btn {
-      padding: 0.4rem 1rem;
+      padding: 0.5rem 1rem;
       border-radius: 40px;
       background: transparent;
       border: none;
       color: #b0c7de;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       box-shadow: none;
       min-height: 44px;
       min-width: 60px;
+      touch-action: manipulation;
     }
 
     .format-btn.active {
@@ -179,6 +246,7 @@
       transition: all 0.15s;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .timeline-card:active {
@@ -212,15 +280,16 @@
       align-items: center;
       justify-content: center;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .delete-btn:active { opacity: 1; text-shadow: 0 0 10px red; }
 
-    /* Form - mobile stacked */
+    /* Form - mobile optimized */
     .alarm-form {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 1rem;
     }
 
     @media (min-width: 768px) {
@@ -236,11 +305,17 @@
       flex-direction: column;
       gap: 0.25rem;
       flex: 1;
-      min-width: 140px;
+      min-width: 100%;
+    }
+
+    @media (min-width: 768px) {
+      .input-group {
+        min-width: 140px;
+      }
     }
 
     .input-group label {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #9bb7dd;
@@ -250,18 +325,44 @@
       background: #0f1a24;
       border: 1px solid #2e4b62;
       border-radius: 2rem;
-      padding: 0.8rem 1rem;
+      padding: 0.9rem 1.2rem;
       color: white;
       font-size: 1rem;
       outline: none;
       transition: all 0.2s;
       -webkit-appearance: none;
-      min-height: 48px;
+      appearance: none;
+      min-height: 50px;
+      width: 100%;
+      touch-action: manipulation;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2300ffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+      padding-right: 2.5rem;
     }
 
     input:focus, select:focus {
       border-color: #0ff;
       box-shadow: 0 0 15px #0ff3;
+    }
+
+    input[type="time"]::-webkit-calendar-picker-indicator {
+      filter: invert(1) sepia(1) saturate(5) hue-rotate(175deg);
+      opacity: 0.8;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
     button {
@@ -271,9 +372,11 @@
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 0 10px #00ffff33;
-      padding: 0.8rem 1.5rem;
-      min-height: 48px;
+      padding: 0.9rem 1.5rem;
+      min-height: 50px;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      white-space: nowrap;
     }
 
     button.primary {
@@ -281,6 +384,13 @@
       border: 1.5px solid #0ff;
       box-shadow: 0 0 20px #0ff5;
       font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      button.primary {
+        margin-top: 0;
+      }
     }
 
     button:active {
@@ -388,7 +498,6 @@
       100% { opacity: 0; }
     }
 
-    /* Helper text */
     .hint-text {
       margin-top: 0.5rem;
       font-size: 0.75rem;
@@ -396,20 +505,35 @@
       text-align: center;
     }
 
-    /* Fix for mobile tap highlight */
     * {
       -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Fix for iOS input zoom */
+    @media screen and (max-width: 768px) {
+      input, select, button {
+        font-size: 16px !important;
+      }
     }
   </style>
 </head>
 <body>
   <div id="app">
+    <!-- Next Alarm Countdown Banner -->
+    <div class="next-alarm-banner glass-panel" id="nextAlarmBanner">
+      <div class="next-alarm-info">
+        <span class="next-alarm-label">⏰ Next Alarm</span>
+        <span class="next-alarm-details" id="nextAlarmDetails">No alarms set</span>
+      </div>
+      <div class="countdown-to-alarm" id="countdownToAlarm">--:--:--</div>
+    </div>
+
     <div class="header-row glass-panel">
       <h1 class="neon-text" style="font-weight: 300; font-size: clamp(1.5rem, 6vw, 2rem);">⚡ FOCUS<span style="font-weight: 700;">FLOW</span></h1>
       <div class="header-controls">
         <div class="time-format-toggle" id="formatToggle">
-          <button class="format-btn active" data-format="24">24h</button>
-          <button class="format-btn" data-format="12">12h</button>
+          <button class="format-btn active" data-format="24" type="button">24h</button>
+          <button class="format-btn" data-format="12" type="button">12h</button>
         </div>
         <div class="current-active-badge" id="activeSessionDisplay">⚪ No active session</div>
       </div>
@@ -425,29 +549,31 @@
 
     <div class="glass-panel">
       <h3 style="margin-bottom: 1rem; font-size: clamp(1rem, 5vw, 1.3rem);">➕ Schedule alarm</h3>
-      <div class="alarm-form">
-        <div class="input-group">
-          <label>⏰ Start (24h)</label>
-          <input type="time" id="startTimeInput" value="09:00" step="60">
+      <form id="alarmForm" onsubmit="return false;">
+        <div class="alarm-form">
+          <div class="input-group">
+            <label>⏰ Start (24h)</label>
+            <input type="time" id="startTimeInput" value="09:00" step="60" required>
+          </div>
+          <div class="input-group">
+            <label>⏱️ Duration (min)</label>
+            <input type="number" id="durationInput" value="25" min="1" max="480" step="1" inputmode="numeric" required>
+          </div>
+          <div class="input-group">
+            <label>📌 Category</label>
+            <select id="categorySelect" required>
+              <option value="work" selected>💼 Work</option>
+              <option value="rest">☕ Rest</option>
+              <option value="sleep">🌙 Sleep</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>🏷️ Label</label>
+            <input type="text" id="labelInput" value="Deep focus" placeholder="Study session" required>
+          </div>
+          <button type="submit" class="primary" id="addAlarmBtn">+ Add alarm</button>
         </div>
-        <div class="input-group">
-          <label>⏱️ Duration (min)</label>
-          <input type="number" id="durationInput" value="25" min="1" max="480" step="1" inputmode="numeric">
-        </div>
-        <div class="input-group">
-          <label>📌 Category</label>
-          <select id="categorySelect">
-            <option value="work" selected>💼 Work</option>
-            <option value="rest">☕ Rest</option>
-            <option value="sleep">🌙 Sleep</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label>🏷️ Label</label>
-          <input type="text" id="labelInput" value="Deep focus" placeholder="Study session">
-        </div>
-        <button class="primary" id="addAlarmBtn">+ Add alarm</button>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -464,7 +590,7 @@
         <div class="countdown-digits" id="fsCountdownText">25:00</div>
       </div>
       <div class="next-alarm-hint" id="nextAlarmInfo">Next: —</div>
-      <button id="exitFullscreenBtn">✕ Exit fullscreen</button>
+      <button id="exitFullscreenBtn" type="button">✕ Exit fullscreen</button>
     </div>
   </div>
 
@@ -486,6 +612,7 @@
       let rotationAngle = 0;
       let animationFrame = null;
       let clockFormat = '24';
+      let countdownInterval = null;
       
       // DOM elements
       const timelineTrack = document.getElementById('timelineTrack');
@@ -495,6 +622,7 @@
       const categorySelect = document.getElementById('categorySelect');
       const labelInput = document.getElementById('labelInput');
       const addBtn = document.getElementById('addAlarmBtn');
+      const alarmForm = document.getElementById('alarmForm');
       const fullscreenOverlay = document.getElementById('fullscreen-overlay');
       const fsDigitalClock = document.getElementById('fsDigitalClock');
       const fsAmpm = document.getElementById('fsAmpm');
@@ -505,6 +633,8 @@
       const flashOverlay = document.getElementById('flash-overlay');
       const alarmAudio = document.getElementById('alarmSound');
       const formatBtns = document.querySelectorAll('.format-btn');
+      const nextAlarmDetails = document.getElementById('nextAlarmDetails');
+      const countdownToAlarm = document.getElementById('countdownToAlarm');
       
       canvas = document.getElementById('timer-canvas');
       canvasCtx = canvas.getContext('2d');
@@ -529,12 +659,64 @@
       }
 
       function formatCountdown(sec) {
+        if (sec < 0) sec = 0;
         const m = Math.floor(sec / 60);
         const s = sec % 60;
         return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
       }
 
-      // Render timeline with touch-friendly cards
+      function formatTimeUntil(hours, minutes, seconds) {
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+
+      // Update next alarm countdown banner
+      function updateNextAlarmCountdown() {
+        const now = new Date();
+        const upcoming = alarms.filter(a => {
+          const alarmTime = parseTimeToDate(a.start);
+          return alarmTime > now;
+        });
+
+        if (upcoming.length === 0) {
+          nextAlarmDetails.textContent = 'No alarms set';
+          countdownToAlarm.textContent = '--:--:--';
+          if (!activeAlarmId) {
+            nextAlarmInfo.textContent = 'No more alarms today';
+          }
+          return;
+        }
+
+        const nextAlarm = upcoming[0];
+        const alarmTime = parseTimeToDate(nextAlarm.start);
+        const timeUntil = Math.floor((alarmTime - now) / 1000);
+        
+        if (timeUntil <= 0) {
+          if (activeAlarmId !== nextAlarm.id) {
+            startAlarm(nextAlarm);
+          }
+          return;
+        }
+
+        const hours = Math.floor(timeUntil / 3600);
+        const minutes = Math.floor((timeUntil % 3600) / 60);
+        const seconds = timeUntil % 60;
+
+        const timeDisplay = formatTimeWithFormat(alarmTime);
+        nextAlarmDetails.textContent = `${timeDisplay} · ${nextAlarm.label} (${nextAlarm.category})`;
+        countdownToAlarm.textContent = formatTimeUntil(hours, minutes, seconds);
+        
+        if (!activeAlarmId) {
+          nextAlarmInfo.textContent = `Next alarm in ${hours}h ${minutes}m · ${nextAlarm.label}`;
+        }
+      }
+
+      function startCountdownTimer() {
+        if (countdownInterval) clearInterval(countdownInterval);
+        countdownInterval = setInterval(() => {
+          updateNextAlarmCountdown();
+        }, 1000);
+      }
+
       function renderTimeline() {
         if (!timelineTrack) return;
         if (alarms.length === 0) {
@@ -548,7 +730,7 @@
           html += `<div class="timeline-card ${alarm.category}" data-id="${alarm.id}">
             <div class="card-header">
               <span>${displayTime}</span>
-              <button class="delete-btn" data-id="${alarm.id}" aria-label="Delete">✕</button>
+              <button class="delete-btn" data-id="${alarm.id}" aria-label="Delete" type="button">✕</button>
             </div>
             <div style="font-weight: 500;">${alarm.label}</div>
             <div style="font-size:0.8rem; opacity:0.8;">${alarm.durationMin}m · ${alarm.category}</div>
@@ -556,10 +738,10 @@
         });
         timelineTrack.innerHTML = html;
         
-        // Delete listeners
         document.querySelectorAll('.delete-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
+            e.preventDefault();
             const id = Number(btn.dataset.id);
             if (confirm('Delete this alarm?')) {
               deleteAlarmById(id);
@@ -568,6 +750,7 @@
         });
         
         attachTimelineStartListeners();
+        updateNextAlarmCountdown();
       }
 
       function deleteAlarmById(id) {
@@ -576,7 +759,6 @@
         sortAlarms();
         renderTimeline();
         updateActiveBadge();
-        updateNextAlarmDisplay();
         saveToLocal();
       }
 
@@ -600,6 +782,7 @@
         activeAlarmId = null;
         exitFullscreenMode();
         updateActiveBadge();
+        updateNextAlarmCountdown();
       }
 
       function startAlarm(alarm) {
@@ -632,7 +815,7 @@
         drawLoop();
         
         updateActiveBadge();
-        updateNextAlarmDisplay();
+        updateNextAlarmCountdown();
       }
 
       function triggerAlarmEnd(alarm) {
@@ -696,18 +879,6 @@
         animationFrame = null;
       }
 
-      function updateNextAlarmDisplay() {
-        const now = new Date();
-        const upcoming = alarms.filter(a => parseTimeToDate(a.start) > now);
-        if (upcoming.length) {
-          const n = upcoming[0];
-          const timeDisp = formatTimeWithFormat(parseTimeToDate(n.start));
-          nextAlarmInfo.textContent = `Next: ${timeDisp} · ${n.label} (${n.category})`;
-        } else {
-          nextAlarmInfo.textContent = '✨ No more alarms today';
-        }
-      }
-
       function draw3DRing(currentSec, totalSec) {
         const ctx = canvasCtx;
         const w = 400, h = 400;
@@ -751,15 +922,20 @@
         ctx.restore();
       }
 
-      function addAlarm() {
+      function addAlarm(e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        
         const start = startTimeInput.value;
         const duration = parseInt(durationInput.value, 10);
         const category = categorySelect.value;
-        const label = labelInput.value.trim() || 'Session';
+        const label = labelInput.value.trim();
         
-        if (!start || duration < 1) {
-          alert('Please fill all fields');
-          return;
+        if (!start || !duration || duration < 1 || !label) {
+          alert('Please fill all fields correctly');
+          return false;
         }
         
         const newAlarm = { 
@@ -773,86 +949,84 @@
         alarms.push(newAlarm);
         sortAlarms();
         renderTimeline();
-        updateNextAlarmDisplay();
         saveToLocal();
+        updateNextAlarmCountdown();
         
         // Clear form
         labelInput.value = '';
         durationInput.value = '25';
+        startTimeInput.value = '09:00';
+        
+        // Show success feedback
+        const btn = addBtn;
+        btn.textContent = '✓ Added!';
+        setTimeout(() => {
+          btn.textContent = '+ Add alarm';
+        }, 1500);
+        
+        return false;
       }
 
       function attachTimelineStartListeners() {
         document.querySelectorAll('.timeline-card').forEach(card => {
-          // Remove existing listeners to prevent duplicates
-          card.removeEventListener('dblclick', handleCardDoubleClick);
-          card.removeEventListener('touchend', handleCardTap);
-          
-          card.addEventListener('dblclick', handleCardDoubleClick);
-          card.addEventListener('touchend', handleCardTap);
+          card.removeEventListener('click', handleCardClick);
+          card.addEventListener('click', handleCardClick);
         });
       }
 
-      function handleCardDoubleClick(e) {
+      let lastTap = 0;
+      function handleCardClick(e) {
         const card = e.currentTarget;
-        const id = Number(card.dataset.id);
-        const alarm = alarms.find(a => a.id === id);
-        if (alarm) startAlarm(alarm);
-      }
-
-      let tapTimeout;
-      function handleCardTap(e) {
-        const card = e.currentTarget;
-        // Prevent conflict with delete button
         if (e.target.classList.contains('delete-btn')) return;
         
-        if (tapTimeout) {
-          clearTimeout(tapTimeout);
-          tapTimeout = null;
-          // Double tap detected
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTap;
+        
+        if (tapLength < 300 && tapLength > 0) {
+          // Double tap
+          e.preventDefault();
           const id = Number(card.dataset.id);
           const alarm = alarms.find(a => a.id === id);
           if (alarm) startAlarm(alarm);
-        } else {
-          tapTimeout = setTimeout(() => {
-            tapTimeout = null;
-          }, 300);
         }
+        lastTap = currentTime;
       }
 
       function saveToLocal() { 
-        localStorage.setItem('neon_alarms_mobile', JSON.stringify(alarms)); 
+        try {
+          localStorage.setItem('neon_alarms_mobile_v3', JSON.stringify(alarms)); 
+        } catch(e) {}
       }
       
       function loadFromLocal() {
-        const saved = localStorage.getItem('neon_alarms_mobile');
-        if (saved) { 
-          try { 
+        try {
+          const saved = localStorage.getItem('neon_alarms_mobile_v3');
+          if (saved) { 
             alarms = JSON.parse(saved); 
             sortAlarms(); 
-          } catch(e) {
-            console.warn('Failed to load alarms');
           }
+        } catch(e) {
+          console.warn('Failed to load alarms');
         }
         renderTimeline();
-        updateNextAlarmDisplay();
+        updateNextAlarmCountdown();
       }
 
       // Format toggle
       formatBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
           const fmt = btn.dataset.format;
           clockFormat = fmt;
           formatBtns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           renderTimeline();
-          updateNextAlarmDisplay();
           if (document.body.classList.contains('fullscreen-active')) {
             updateDigitalClockFS();
           }
         });
       });
 
-      // Check for scheduled alarms
       function checkScheduledAlarms() {
         const now = new Date();
         const currentTimeStr = now.toLocaleTimeString([], { 
@@ -871,7 +1045,8 @@
         Notification.requestPermission();
       }
       
-      exitFullscreenBtn.addEventListener('click', () => {
+      exitFullscreenBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         if (activeAlarmId) {
           if (confirm('Stop current session?')) {
             stopActiveAlarm();
@@ -881,9 +1056,17 @@
         }
       });
       
+      // Form submission handlers
+      alarmForm.addEventListener('submit', addAlarm);
       addBtn.addEventListener('click', addAlarm);
+      addBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+      }, { passive: false });
       
+      // Start countdown timer
+      startCountdownTimer();
       setInterval(checkScheduledAlarms, 30000);
+      
       loadFromLocal();
       updateActiveBadge();
       
@@ -893,13 +1076,21 @@
         }
       });
       
-      // Re-attach listeners when timeline changes
       new MutationObserver(() => attachTimelineStartListeners())
         .observe(timelineTrack, { childList: true, subtree: true });
       
       window.addEventListener('beforeunload', () => { 
-        if (timerInterval) clearInterval(timerInterval); 
+        if (timerInterval) clearInterval(timerInterval);
+        if (countdownInterval) clearInterval(countdownInterval);
       });
+      
+      // Fix for iOS
+      document.addEventListener('touchmove', (e) => {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
     })();
   </script>
 </body>
